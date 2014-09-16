@@ -2,7 +2,7 @@ class Product
 
 	attr_accessor :name, :price, :code, :sell
 
-	def initialize(name, price, quantity, code)
+	def initialize(name, price, code)
 		@name = name
 		@price = price
 		@code = code
