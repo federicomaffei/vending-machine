@@ -4,10 +4,10 @@ describe VendingMachine do
 	let(:machine) {VendingMachine.new}
 	context 'when initialized' do
 		it 'has a capacity of 50 slots for items by default.' do
-			expect(machine.items.length).to eq 50
+			expect(machine.capacity).to eq 50
 		end
 		it 'when created it is empty.' do
-			expect(machine).to be_empty
+			expect(machine.items.length).to eq 0
 		end
 	end
 
@@ -30,7 +30,7 @@ describe VendingMachine do
 		end
 	end
 
-	xcontext 'initial change loading' do
+	context 'initial change loading' do
 		before(:each) {machine.initial_change_load}
 		it 'is initially loaded with 5 2£ coins' do
 			expect(machine.change_count('2£')).to eq 5
