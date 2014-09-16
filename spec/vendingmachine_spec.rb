@@ -1,8 +1,8 @@
 require 'vendingmachine'
 
 describe VendingMachine do
+	let(:machine) {VendingMachine.new}
 	context 'when initialized' do
-		let(:machine) {VendingMachine.new}
 		it 'has a capacity of 50 slots for items by default.' do
 			expect(machine.items.length).to eq 50
 		end
@@ -10,9 +10,9 @@ describe VendingMachine do
 			expect(machine).to be_empty
 		end
 	end
+
 	context 'initial loading' do
-		let(:machine) {VendingMachine.new}
-		before(:each) {machine.initial_load}
+		before(:each) {machine.initial_product_load}
 		it 'is initially loaded with 10 Mars Bars' do
 			expect(machine.item_count('Mars Bar')).to eq 10
 		end
@@ -29,4 +29,33 @@ describe VendingMachine do
 			expect(machine.item_count('Water')).to eq 10
 		end
 	end
+
+	xcontext 'initial change loading' do
+		before(:each) {machine.initial_change_load}
+		it 'is initially loaded with 5 2£ coins' do
+			expect(machine.change_count('2£')).to eq 5
+		end
+		it 'is initially loaded with 5 1£ coins' do
+			expect(machine.change_count('1£')).to eq 5
+		end
+		it 'is initially loaded with 5 50p coins' do
+			expect(machine.change_count('50p')).to eq 5
+		end
+		it 'is initially loaded with 5 20p coins' do
+			expect(machine.change_count('20p')).to eq 5
+		end
+		it 'is initially loaded with 5 10p coins' do
+			expect(machine.change_count('10p')).to eq 5
+		end
+		it 'is initially loaded with 5 5p coins' do
+			expect(machine.change_count('5p')).to eq 5
+		end
+		it 'is initially loaded with 5 2p coins' do
+			expect(machine.change_count('2p')).to eq 5
+		end
+		it 'is initially loaded with 5 1p coins' do
+			expect(machine.change_count('1p')).to eq 5
+		end
+	end
+
 end
