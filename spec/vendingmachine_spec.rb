@@ -60,20 +60,11 @@ describe VendingMachine do
 
 	context 'product selection and purchase' do
 		before(:each) {machine.product_load}
-		it 'prompts to choose a product' do
-			expect(STDOUT).to receive(:puts).with "Please, enter 1 for Mars Bar, 2 for Snickers, 3 for Coca Cola, 4 for Pringles, 5 for Water:"
-			machine.prompt_product
-		end
 
 		it 'selects a product by code, if available.' do
 			expect(STDIN).to receive(:gets).and_return "1"
 			expect(STDOUT).to receive(:puts).with "You selected a Mars Bar. The price is 100."
 			machine.select_item
-		end
-
-		it 'prompts for money, in a known format.' do
-			expect(STDOUT).to receive(:puts).with "Please enter a coin, accepted formats: 2£, 1£, 50p, 20p, 10p, 5p, 2p, 1p."
-			machine.prompt_coins
 		end
 
 		it 'processes and accepts money, if the format is known.' do

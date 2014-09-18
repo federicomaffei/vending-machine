@@ -59,14 +59,6 @@ class VendingMachine
 		return selected_item
 	end
 
-	def prompt_product
-		puts "Please, enter 1 for Mars Bar, 2 for Snickers, 3 for Coca Cola, 4 for Pringles, 5 for Water:"
-	end
-
-	def prompt_coins
-		puts "Please enter a coin, accepted formats: 2£, 1£, 50p, 20p, 10p, 5p, 2p, 1p."
-	end
-
 	def accept_coins
 		change << Change.new(STDIN.gets.chomp, 1)
 		self.user_change = self.user_change + change.last.value
