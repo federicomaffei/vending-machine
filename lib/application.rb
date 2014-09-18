@@ -2,7 +2,7 @@ require_relative 'vendingmachine'
 
 class Application
 
-	attr_accessor :machine, :selected_product
+	attr_accessor :machine
 
 	def initialize
 		@machine = VendingMachine.new
@@ -20,13 +20,33 @@ class Application
 		puts "Please enter a coin, accepted formats: 2£, 1£, 50p, 20p, 10p, 5p, 2p, 1p."
 	end
 
+	def ask_for_more_change
+		puts "#{machine.compute_missing_change}p more needed!"
+	end
+
+	def return_change
+		puts "Your change is #{machine.compute_due_change}p."
+	end		
+
 	def get_product_choice
-		selected_product = machine.select_item(STDIN.gets.chomp)
-		puts "You selected a #{selected_product.name}. The price is #{selected_product.price}."
+		machine.select_item(STDIN.gets.chomp)
+		puts "You selected a #{machine.selected_item.name}. The price is #{machine.selected_item.price}."
 	end
 
 	def get_payment
-		puts "You inserted #{machine.accept_coins(STDIN.gets.chomp).coin_type}."
+		machine.accept_coins(STDIN.gets.chomp)
+		puts "You inserted #{machine.inserted_change.coin_type}."
 	end
 
+	def confirm_purchase
+		puts "You just bought a #{machine.selected_item.name}!"
+	end
+
+	def check_payment
+		machine.check_equal_amount ? confirm_purchase : check_inequal_payment
+	end
+
+	def check_inequal_payment
+		machine.check_superior_amount ? return_change : ask_for_more_change
+	end
 end

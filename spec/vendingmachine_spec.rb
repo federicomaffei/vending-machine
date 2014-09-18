@@ -2,6 +2,7 @@ require 'vendingmachine'
 
 describe VendingMachine do
 	let(:machine) {VendingMachine.new}
+	let(:mars_bar) {Product.new('Mars Bar', 100, "1", 10)}
 	context 'when initialized' do
 		it 'has a capacity of 50 slots for items by default.' do
 			expect(machine.capacity).to eq 50
@@ -66,49 +67,24 @@ describe VendingMachine do
 		end
 
 		it 'processes and accepts money, if the format is known.' do
-			expect(machine.accept_coins("2£").value).to eq 200
+			expect(machine.accept_coins("2£")).to eq 200
 			expect(machine.change.length).to eq 1
 		end
 
-		xit 'returns a message with the product that the just bought.' do
-			expect(STDIN).to receive(:gets).and_return "1"
-			expect(STDOUT).to receive(:puts).with "You selected a Mars Bar. The price is 100."
-			expect(STDOUT).to receive(:puts).with "You just bought a Mars Bar!"
-			machine.sell_item(machine.select_item)
+		it 'deletes one product that has been sold from the total.' do
+			machine.sell_item(mars_bar)
 			expect(machine.item_count('Mars Bar')).to eq 9
 		end
 
-		xit 'checks if the change inserted by the user is exactly enough for the item.' do
-			expect(STDIN).to receive(:gets).and_return "1"
-			expect(STDOUT).to receive(:puts).with "You selected a Mars Bar. The price is 100."
-			expect(STDIN).to receive(:gets).and_return "1£"
-			expect(STDOUT).to receive(:puts).with "You inserted 1£."
-			machine.select_item
-			machine.accept_coins
+		it 'checks if the change inserted by the user is exactly enough for the item.' do
+			machine.select_item("1")
+			machine.accept_coins("1£")
 			expect(machine.check_equal_amount).to be_truthy
 		end
 
-		xit 'checks if the change inserted by the user is more than enough for the item.' do
-			expect(STDIN).to receive(:gets).and_return "3"
-			expect(STDOUT).to receive(:puts).with "You selected a Coca Cola. The price is 80."
-			expect(STDIN).to receive(:gets).and_return "1£"
-			expect(STDOUT).to receive(:puts).with "You inserted 1£."
-			expect(STDOUT).to receive(:puts).with "Your change is 20p."
-			machine.select_item
-			machine.accept_coins
-			machine.compute_due_change
-			expect(machine.check_superior_amount).to be_truthy
-		end
-
-		xit 'checks if the change inserted by the user is less than enough for the item.' do
-			expect(STDIN).to receive(:gets).and_return "1"
-			expect(STDOUT).to receive(:puts).with "You selected a Mars Bar. The price is 100."
-			expect(STDIN).to receive(:gets).and_return "50p"
-			expect(STDOUT).to receive(:puts).with "You inserted 50p."
-			expect(STDOUT).to receive(:puts).with "50p more needed!"
-			machine.select_item
-			machine.accept_coins
-			machine.compute_missing_change
+		it 'checks if the change inserted by the user is less than enough for the item.' do
+			machine.select_item("1")
+			machine.accept_coins("50p")
 			expect(machine.check_inferior_amount).to be_truthy
 		end
 	end

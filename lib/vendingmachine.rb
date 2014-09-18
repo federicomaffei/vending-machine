@@ -14,7 +14,7 @@ class VendingMachine
 		{coin_type: '10p', quantity: 5}, {coin_type: '5p', quantity: 5},
 		{coin_type: '2p', quantity: 5}, {coin_type: '1p', quantity: 5}]
 
-	attr_accessor :capacity, :user_change, :selected_item
+	attr_accessor :capacity, :user_change, :selected_item, :inserted_change
 
 	def initialize(capacity = CAPACITY)
 		@capacity = capacity
@@ -31,7 +31,7 @@ class VendingMachine
 	def user_change
 		@user_change ||= 0
 	end
-
+	
 	def empty?
 		items.count == 0 ? true : false
 	end
@@ -53,7 +53,7 @@ class VendingMachine
 	end
 
 	def select_item(code)
-		items.select {|item| item.code == code}.first
+		@selected_item = items.select {|item| item.code == code}.first
 	end
 
 	def select_change(coin_type)
@@ -62,12 +62,12 @@ class VendingMachine
 
 	def accept_coins(coin_type)
 		change << Change.new(coin_type)
-		select_change(coin_type)
+		@inserted_change = select_change(coin_type)
+		self.user_change = self.user_change + self.inserted_change.value
 	end
 
 	def sell_item(item)
-		puts "You just bought a #{item.name}!"
-		item.quantity -= 1
+		select_item(item.code).quantity -= 1
 	end
 
 	def check_equal_amount
@@ -83,10 +83,10 @@ class VendingMachine
 	end
 
 	def compute_due_change
-		puts "Your change is #{user_change - selected_item.price}p."
+		user_change - selected_item.price
 	end
 
 	def compute_missing_change
-		puts "#{selected_item.price - user_change}p more needed!"
+		selected_item.price - user_change
 	end
 end
