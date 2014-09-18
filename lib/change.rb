@@ -1,9 +1,10 @@
 class Change
 
-	attr_accessor :coin_type
+	attr_accessor :coin_type, :value, :quantity
 
-	def initialize(coin_type)
+	def initialize(coin_type, quantity)
 		@coin_type = coin_type
+		@quantity = quantity
 	end
 
 	def value

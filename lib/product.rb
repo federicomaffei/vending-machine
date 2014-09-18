@@ -1,23 +1,16 @@
 class Product
 
-	attr_accessor :name, :price, :code, :sell
+	attr_accessor :name, :price, :code, :quantity
 
-	def initialize(name, price, code)
+	def initialize(name, price, code, quantity)
 		@name = name
 		@price = price
 		@code = code
-		@sold = false
-	end
-
-	def sold?
-		@sold
-	end
-
-	def sell
-		@sold = true
-	end
-
-	def stock
-		@sold = false
+		@quantity = quantity
 	end
 end
+
+
+
+
+
