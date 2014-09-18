@@ -49,20 +49,20 @@ class VendingMachine
 	end
 
 	def change_count(coin_type)
-		change.select {|item| item.coin_type == coin_type}.first.quantity
+		select_change(coin_type).quantity
 	end
 
-	def select_item
-		code = STDIN.gets.chomp
-		self.selected_item = items.select {|item| item.code == code}.first
-		puts "You selected a #{selected_item.name}. The price is #{selected_item.price}."
-		return selected_item
+	def select_item(code)
+		items.select {|item| item.code == code}.first
 	end
 
-	def accept_coins
-		change << Change.new(STDIN.gets.chomp, 1)
-		self.user_change = self.user_change + change.last.value
-		puts "You inserted #{change.last.coin_type}."
+	def select_change(coin_type)
+		change.select {|item| item.coin_type == coin_type}.first
+	end
+
+	def accept_coins(coin_type)
+		change << Change.new(coin_type)
+		select_change(coin_type)
 	end
 
 	def sell_item(item)
