@@ -59,10 +59,6 @@ class VendingMachine
 		return selected_item
 	end
 
-	def welcome_message
-		puts "Welcome to Federico's Vending Machine!"
-	end
-
 	def prompt_product
 		puts "Please, enter 1 for Mars Bar, 2 for Snickers, 3 for Coca Cola, 4 for Pringles, 5 for Water:"
 	end
@@ -95,12 +91,10 @@ class VendingMachine
 	end
 
 	def compute_due_change
-		c = user_change - selected_item.price
-		puts "Your change is #{c}p."
+		puts "Your change is #{user_change - selected_item.price}p."
 	end
 
 	def compute_missing_change
-		c = selected_item.price - user_change
-		puts "#{c}p more needed!"
+		puts "#{selected_item.price - user_change}p more needed!"
 	end
 end

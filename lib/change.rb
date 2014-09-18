@@ -8,7 +8,15 @@ class Change
 	end
 
 	def value
-		coin_type.match(/\D+/).to_s == '£' ? coin_type.match(/\d+/).to_s.to_i * 100 : coin_type.match(/\d+/).to_s.to_i
+		coin_type.match(/\D+/).to_s == '£' ? pounds_convert : pence_convert
+	end
+
+	def pounds_convert
+		coin_type.match(/\d+/).to_s.to_i * 100
+	end
+
+	def pence_convert
+		coin_type.match(/\d+/).to_s.to_i
 	end
 
 end
