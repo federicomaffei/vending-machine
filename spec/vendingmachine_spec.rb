@@ -1,4 +1,5 @@
 require 'vendingmachine'
+require 'error'
 
 describe VendingMachine do
 	let(:machine) {VendingMachine.new}
@@ -66,9 +67,17 @@ describe VendingMachine do
 			expect(machine.select_item("1").name).to eq 'Mars Bar'
 		end
 
+		it 'throws an error if the code entered by the user is invalid.' do
+			expect{machine.select_item("wrong")}.to raise_exception(InvalidCodeException)
+		end
+
 		it 'processes and accepts money, if the format is known.' do
-			expect(machine.accept_coins("2£")).to eq 200
+			expect(machine.accept_coins("£2")).to eq 200
 			expect(machine.change.length).to eq 1
+		end
+
+		it 'throws an error if the coin type entered by the user is invalid.' do
+			expect{machine.accept_coins("wrong_type")}.to raise_exception(InvalidCoinException)
 		end
 
 		it 'deletes one product that has been sold from the total.' do
@@ -78,7 +87,7 @@ describe VendingMachine do
 
 		it 'checks if the change inserted by the user is exactly enough for the item.' do
 			machine.select_item("1")
-			machine.accept_coins("1£")
+			machine.accept_coins("£1")
 			expect(machine.check_equal_amount).to be_truthy
 		end
 

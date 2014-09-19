@@ -64,6 +64,7 @@ describe Application do
 			expect(STDOUT).to receive(:puts).with "50p more needed!"
 			expect(STDIN).to receive(:gets).and_return "£1"
 			expect(STDOUT).to receive(:puts).with "You inserted £1."
+			expect(STDOUT).to receive(:puts).with "You just bought a Mars Bar!"
 			expect(STDOUT).to receive(:puts).with "Your change is 50p."
 			app.get_payment
 			app.check_payment

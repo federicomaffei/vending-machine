@@ -25,6 +25,7 @@ class Application
 	end
 
 	def return_change
+		confirm_purchase
 		puts "Your change is #{machine.compute_due_change}p."
 	end		
 
