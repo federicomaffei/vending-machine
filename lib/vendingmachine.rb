@@ -1,7 +1,7 @@
 require_relative 'product'
 require_relative 'change'
 
-class VendingMachine
+module VendingMachine
 
 	CAPACITY = 50
 	PRODUCTS = [{name: 'Mars Bar', price: 100, code: "1", quantity: 10}, 
@@ -16,14 +16,14 @@ class VendingMachine
 	ALLOWED_PRODUCTS = ["1", "2", "3", "4", "5"]
 	ALLOWED_COINS = ["£2", "£1", "50p", "20p", "10p", "5p", "2p", "1p"]
 
-	attr_accessor :capacity, :user_change, :selected_item, :inserted_change
+	attr_accessor :capacity, :user_change, :selected_product, :inserted_change
 
-	def initialize(capacity = CAPACITY)
-		@capacity = capacity
+	def capacity
+		@capacity = CAPACITY
 	end
 
-	def items
-		@items ||= []
+	def products
+		@products ||= []
 	end
 
 	def change
@@ -35,32 +35,32 @@ class VendingMachine
 	end
 	
 	def empty?
-		items.count == 0 ? true : false
+		products.count == 0 ? true : false
 	end
 
-	def product_load
-		PRODUCTS.each {|item| items << Product.new(item[:name], item[:price], item[:code], item[:quantity])}
+	def products_load
+		PRODUCTS.each {|product| products << Product.new(product[:name], product[:price], product[:code], product[:quantity])}
 	end
 
 	def change_load
 		COINS.each {|coin| change << Change.new(coin[:coin_type], coin[:quantity])}
 	end
 
-	def item_count(name)
-		items.select {|item| item.name == name}.first.quantity
+	def product_count(name)
+		products.select {|product| product.name == name}.first.quantity
 	end
 
 	def change_count(coin_type)
 		select_change(coin_type).quantity
 	end
 
-	def select_item(code)
+	def select_product(code)
 		raise InvalidCodeException.new if !ALLOWED_PRODUCTS.include?(code)
-		@selected_item = items.select {|item| item.code == code}.first
+		@selected_product = products.select {|product| product.code == code}.first
 	end
 
 	def select_change(coin_type)
-		change.select {|item| item.coin_type == coin_type}.first
+		change.select {|product| product.coin_type == coin_type}.first
 	end
 
 	def accept_coins(coin_type)
@@ -70,27 +70,27 @@ class VendingMachine
 		self.user_change = self.user_change + self.inserted_change.value
 	end
 
-	def sell_item(item)
-		select_item(item.code).quantity -= 1
+	def sell_product(product)
+		select_product(product.code).quantity -= 1
 	end
 
 	def check_equal_amount
-		user_change == selected_item.price ? true : false
+		user_change == selected_product.price ? true : false
 	end
 
 	def check_superior_amount
-		user_change > selected_item.price ? true : false
+		user_change > selected_product.price ? true : false
 	end
 
 	def check_inferior_amount
-		user_change < selected_item.price ? true : false
+		user_change < selected_product.price ? true : false
 	end
 
 	def compute_due_change
-		user_change - selected_item.price
+		user_change - selected_product.price
 	end
 
 	def compute_missing_change
-		selected_item.price - user_change
+		selected_product.price - user_change
 	end
 end

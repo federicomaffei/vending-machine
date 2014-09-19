@@ -2,11 +2,9 @@ require_relative 'vendingmachine'
 
 class Application
 
-	attr_accessor :machine
+	include VendingMachine
 
-	def initialize
-		@machine = VendingMachine.new
-	end
+	attr_accessor :machine
 
 	def welcome_message
 		puts "Welcome to Federico's Vending Machine!"
@@ -21,18 +19,18 @@ class Application
 	end
 
 	def ask_for_more_change
-		puts "#{machine.compute_missing_change}p more needed!"
+		puts "#{compute_missing_change}p more needed!"
 	end
 
 	def return_change
 		confirm_purchase
-		puts "Your change is #{machine.compute_due_change}p."
+		puts "Your change is #{compute_due_change}p."
 	end		
 
 	def get_product_choice
 		begin
-			machine.select_item(STDIN.gets.chomp)
-			puts "You selected a #{machine.selected_item.name}. The price is #{machine.selected_item.price}."
+			select_product(STDIN.gets.chomp)
+			puts "You selected a #{selected_product.name}. The price is #{selected_product.price}."
 		rescue InvalidCodeException
 			puts "The entered code does not correspond to a product."
 		end
@@ -40,22 +38,26 @@ class Application
 
 	def get_payment
 		begin
-			machine.accept_coins(STDIN.gets.chomp)
-			puts "You inserted #{machine.inserted_change.coin_type}."
+			accept_coins(STDIN.gets.chomp)
+			puts "You inserted #{inserted_change.coin_type}."
 		rescue InvalidCoinException
 			puts "The entered coin is not valid."
 		end
 	end
 
 	def confirm_purchase
-		puts "You just bought a #{machine.selected_item.name}!"
+		puts "You just bought a #{selected_product.name}!"
 	end
 
 	def check_payment
-		machine.check_equal_amount ? confirm_purchase : check_inequal_payment
+		check_equal_amount ? confirm_purchase : check_inequal_payment
 	end
 
 	def check_inequal_payment
-		machine.check_superior_amount ? return_change : ask_for_more_change
+		check_superior_amount ? return_change : ask_for_more_change
+	end
+
+	def application_logic
+		puts 'test'
 	end
 end

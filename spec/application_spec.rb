@@ -20,7 +20,7 @@ describe Application do
 	end
 
 	context 'handling user choices' do
-		before(:each) {app.machine.product_load}
+		before(:each) {app.products_load}
 		it 'allows the user to select a product by code' do
 			expect(STDIN).to receive(:gets).and_return "1"
 			expect(STDOUT).to receive(:puts).with "You selected a Mars Bar. The price is 100."
@@ -48,7 +48,7 @@ describe Application do
 
 	context 'handling payment logic' do
 		before(:each) do
-			app.machine.product_load
+			app.products_load
 			expect(STDIN).to receive(:gets).and_return "1"
 			expect(STDOUT).to receive(:puts).with "You selected a Mars Bar. The price is 100."
 			app.get_product_choice
