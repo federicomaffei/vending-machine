@@ -27,9 +27,21 @@ describe Application do
 			app.get_product_choice
 		end
 
+		it 'handles an invalid product choice' do
+			expect(STDIN).to receive(:gets).and_return "wrong"
+			expect(STDOUT).to receive(:puts).with "The entered code does not correspond to a product."
+			app.get_product_choice
+		end
+
 		it 'allows the user to put money in the machine.' do
 			expect(STDIN).to receive(:gets).and_return "£2"
 			expect(STDOUT).to receive(:puts).with "You inserted £2."
+			app.get_payment
+		end
+
+		it 'handles an invalid coin input.' do
+			expect(STDIN).to receive(:gets).and_return "wrong"
+			expect(STDOUT).to receive(:puts).with "The entered coin is not valid."
 			app.get_payment
 		end
 	end

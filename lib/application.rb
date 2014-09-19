@@ -30,13 +30,21 @@ class Application
 	end		
 
 	def get_product_choice
-		machine.select_item(STDIN.gets.chomp)
-		puts "You selected a #{machine.selected_item.name}. The price is #{machine.selected_item.price}."
+		begin
+			machine.select_item(STDIN.gets.chomp)
+			puts "You selected a #{machine.selected_item.name}. The price is #{machine.selected_item.price}."
+		rescue InvalidCodeException
+			puts "The entered code does not correspond to a product."
+		end
 	end
 
 	def get_payment
-		machine.accept_coins(STDIN.gets.chomp)
-		puts "You inserted #{machine.inserted_change.coin_type}."
+		begin
+			machine.accept_coins(STDIN.gets.chomp)
+			puts "You inserted #{machine.inserted_change.coin_type}."
+		rescue InvalidCoinException
+			puts "The entered coin is not valid."
+		end
 	end
 
 	def confirm_purchase
