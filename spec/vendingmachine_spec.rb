@@ -33,11 +33,11 @@ describe VendingMachine do
 
 	context 'initial change loading' do
 		before(:each) {machine.change_load}
-		it 'is initially loaded with 5 2£ coins.' do
-			expect(machine.change_count('2£')).to eq 5
+		it 'is initially loaded with 5 £2 coins.' do
+			expect(machine.change_count('£2')).to eq 5
 		end
-		it 'is initially loaded with 5 1£ coins.' do
-			expect(machine.change_count('1£')).to eq 5
+		it 'is initially loaded with 5 £1 coins.' do
+			expect(machine.change_count('£1')).to eq 5
 		end
 		it 'is initially loaded with 5 50p coins.' do
 			expect(machine.change_count('50p')).to eq 5

@@ -9,7 +9,7 @@ class VendingMachine
 		{name: 'Coca Cola', price: 80, code: "3", quantity: 10},
 		{name: 'Pringles', price: 120, code: "4", quantity: 10},
 		{name: 'Water', price: 60, code: "5", quantity: 10}]
-	COINS = [{coin_type: '2£', quantity: 5}, {coin_type: '1£', quantity: 5},
+	COINS = [{coin_type: '£2', quantity: 5}, {coin_type: '£1', quantity: 5},
 		{coin_type: '50p', quantity: 5}, {coin_type: '20p', quantity: 5},
 		{coin_type: '10p', quantity: 5}, {coin_type: '5p', quantity: 5},
 		{coin_type: '2p', quantity: 5}, {coin_type: '1p', quantity: 5}]

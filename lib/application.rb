@@ -17,7 +17,7 @@ class Application
 	end
 
 	def prompt_change
-		puts "Please enter a coin, accepted formats: 2£, 1£, 50p, 20p, 10p, 5p, 2p, 1p."
+		puts "Please enter a coin, accepted formats: £2, £1, 50p, 20p, 10p, 5p, 2p, 1p."
 	end
 
 	def ask_for_more_change

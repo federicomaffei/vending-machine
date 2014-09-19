@@ -14,7 +14,7 @@ describe Application do
 		end
 
 		it 'prompts the user to input change' do
-			expect(STDOUT).to receive(:puts).with "Please enter a coin, accepted formats: 2£, 1£, 50p, 20p, 10p, 5p, 2p, 1p."
+			expect(STDOUT).to receive(:puts).with "Please enter a coin, accepted formats: £2, £1, 50p, 20p, 10p, 5p, 2p, 1p."
 			app.prompt_change
 		end
 	end
@@ -28,8 +28,8 @@ describe Application do
 		end
 
 		it 'allows the user to put money in the machine.' do
-			expect(STDIN).to receive(:gets).and_return "2£"
-			expect(STDOUT).to receive(:puts).with "You inserted 2£."
+			expect(STDIN).to receive(:gets).and_return "£2"
+			expect(STDOUT).to receive(:puts).with "You inserted £2."
 			app.get_payment
 		end
 	end
@@ -43,8 +43,8 @@ describe Application do
 		end
 
 		it 'confirms if payment is exactly correct.' do
-			expect(STDIN).to receive(:gets).and_return "1£"
-			expect(STDOUT).to receive(:puts).with "You inserted 1£."
+			expect(STDIN).to receive(:gets).and_return "£1"
+			expect(STDOUT).to receive(:puts).with "You inserted £1."
 			expect(STDOUT).to receive(:puts).with "You just bought a Mars Bar!"
 			app.get_payment
 			app.check_payment
@@ -62,8 +62,8 @@ describe Application do
 			expect(STDIN).to receive(:gets).and_return "50p"
 			expect(STDOUT).to receive(:puts).with "You inserted 50p."
 			expect(STDOUT).to receive(:puts).with "50p more needed!"
-			expect(STDIN).to receive(:gets).and_return "1£"
-			expect(STDOUT).to receive(:puts).with "You inserted 1£."
+			expect(STDIN).to receive(:gets).and_return "£1"
+			expect(STDOUT).to receive(:puts).with "You inserted £1."
 			expect(STDOUT).to receive(:puts).with "Your change is 50p."
 			app.get_payment
 			app.check_payment
