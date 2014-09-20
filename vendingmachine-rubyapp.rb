@@ -2,6 +2,7 @@ require_relative './lib/application'
 
 app = Application.new
 app.products_load
+app.change_load
 app.welcome_message
 app.prompt_product
 app.get_product_choice

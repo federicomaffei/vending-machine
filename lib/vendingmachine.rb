@@ -9,10 +9,10 @@ module VendingMachine
 		{name: 'Coca Cola', price: 80, code: "3", quantity: 10},
 		{name: 'Pringles', price: 120, code: "4", quantity: 10},
 		{name: 'Water', price: 60, code: "5", quantity: 10}]
-	COINS = [{coin_type: '£2', quantity: 5}, {coin_type: '£1', quantity: 5},
-		{coin_type: '50p', quantity: 5}, {coin_type: '20p', quantity: 5},
-		{coin_type: '10p', quantity: 5}, {coin_type: '5p', quantity: 5},
-		{coin_type: '2p', quantity: 5}, {coin_type: '1p', quantity: 5}]
+	COINS = [{coin_type: "£2", quantity: 5}, {coin_type: "£1", quantity: 5},
+		{coin_type: "50p", quantity: 5}, {coin_type: "20p", quantity: 5},
+		{coin_type: "10p", quantity: 5}, {coin_type: "5p", quantity: 5},
+		{coin_type: "2p", quantity: 5}, {coin_type: "1p", quantity: 5}]
 	ALLOWED_PRODUCTS = ["1", "2", "3", "4", "5"]
 	ALLOWED_COINS = ["£2", "£1", "50p", "20p", "10p", "5p", "2p", "1p"]
 
@@ -33,7 +33,7 @@ module VendingMachine
 	def user_change
 		@user_change ||= 0
 	end
-	
+
 	def empty?
 		products.count == 0 ? true : false
 	end
@@ -60,17 +60,16 @@ module VendingMachine
 	end
 
 	def select_change(coin_type)
-		change.select {|product| product.coin_type == coin_type}.first
+		raise InvalidCoinException.new if !ALLOWED_COINS.include?(coin_type)
+		@inserted_change = change.select {|coin| coin.coin_type == coin_type}.first
 	end
 
 	def accept_coins(coin_type)
-		raise InvalidCoinException.new if !ALLOWED_COINS.include?(coin_type)
-		change << Change.new(coin_type)
-		update_user_credit(coin_type)
+		select_change(coin_type).quantity += 1
+		update_user_credit
 	end
 
-	def update_user_credit(coin_type)
-		@inserted_change = select_change(coin_type)
+	def update_user_credit
 		self.user_change = self.user_change + self.inserted_change.value
 	end
 

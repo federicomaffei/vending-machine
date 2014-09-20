@@ -20,7 +20,11 @@ describe Application do
 	end
 
 	context 'handling user choices' do
-		before(:each) {app.products_load}
+		before(:each) do 
+			app.products_load
+			app.change_load
+		end
+
 		it 'allows the user to select a product by code' do
 			expect(STDIN).to receive(:gets).and_return "1"
 			expect(STDOUT).to receive(:puts).with "You selected a Mars Bar. The price is £1.0."
@@ -49,6 +53,7 @@ describe Application do
 	context 'handling payment logic' do
 		before(:each) do
 			app.products_load
+			app.change_load
 			expect(STDIN).to receive(:gets).and_return "1"
 			expect(STDOUT).to receive(:puts).with "You selected a Mars Bar. The price is £1.0."
 			app.get_product_choice

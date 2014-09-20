@@ -63,7 +63,10 @@ describe VendingMachine do
 	end
 
 	context 'product selection and purchase' do
-		before(:each) {machine.products_load}
+		before(:each) do
+			machine.products_load
+			machine.change_load
+		end
 
 		it 'selects a product by code, if available.' do
 			expect(machine.select_product("1").name).to eq 'Mars Bar'
@@ -74,8 +77,8 @@ describe VendingMachine do
 		end
 
 		it 'processes and accepts money, if the format is known.' do
-			expect(machine.accept_coins("£2")).to eq 200
-			expect(machine.change.length).to eq 1
+			machine.accept_coins("£2")
+			expect(machine.change_count("£2")).to eq 6
 		end
 
 		it 'throws an error if the coin type entered by the user is invalid.' do
