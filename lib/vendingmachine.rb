@@ -61,10 +61,11 @@ module VendingMachine
 
 	def select_change(coin_type)
 		raise InvalidCoinException.new if !ALLOWED_COINS.include?(coin_type)
-		@inserted_change = change.select {|coin| coin.coin_type == coin_type}.first
+		change.select {|coin| coin.coin_type == coin_type}.first
 	end
 
 	def accept_coins(coin_type)
+		@inserted_change = select_change(coin_type)
 		select_change(coin_type).quantity += 1
 		update_user_credit
 	end
