@@ -2,8 +2,8 @@ class Change
 
 	attr_accessor :coin_type, :value, :quantity
 
-	COINS = [{coin_type: "£2", quantity: 5}, {coin_type: "£1", quantity: 5},
-		{coin_type: "50p", quantity: 5}, {coin_type: "20p", quantity: 5},
+	COINS = [{coin_type: "£2", quantity: 1}, {coin_type: "£1", quantity: 1},
+		{coin_type: "50p", quantity: 2}, {coin_type: "20p", quantity: 5},
 		{coin_type: "10p", quantity: 5}, {coin_type: "5p", quantity: 5},
 		{coin_type: "2p", quantity: 5}, {coin_type: "1p", quantity: 5}
 	]

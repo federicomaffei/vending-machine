@@ -1,74 +1,69 @@
-require_relative 'product'
-require_relative 'change'
+require_relative 'change_handler'
+require_relative 'product_handler'
+require_relative 'error'
 
-module VendingMachine
+class VendingMachine
 
-	CAPACITY = 50
-	
-	attr_accessor :capacity, :user_change, :selected_product, :inserted_change
+	include ChangeHandler, ProductHandler
 
-	def capacity
-		@capacity = CAPACITY
+	def welcome_message
+		puts "Welcome to Federico's Vending Machine!"
 	end
 
-	def products
-		@products ||= []
+	def prompt_product
+		puts "Please, enter 1 for Mars Bar, 2 for Snickers, 3 for Coca Cola, 4 for Pringles, 5 for Water:"
 	end
 
-	def change
-		@change ||= []
+	def prompt_change
+		puts "Please enter a coin, accepted formats: £2, £1, 50p, 20p, 10p, 5p, 2p, 1p."
 	end
 
-	def user_change
-		@user_change ||= 0
+	def ask_for_more_change
+		puts("#{compute_missing_change} more needed!")
+		prompt_change
 	end
 
-	def empty?
-		products.count == 0 ? true : false
+	def return_change
+		puts("Your change is #{compute_due_change}.")
+		confirm_purchase
+	end		
+
+	def get_product_choice
+		begin
+			select_product(STDIN.gets.chomp)
+			puts "You selected a #{selected_product.name}. The price is #{compute_price}."
+		rescue InvalidCodeException
+			puts "The entered code does not correspond to a product."
+		end
 	end
 
-	def products_load
-		Product::PRODUCTS.each {|product| products << Product.new(product[:name], product[:price], product[:code], product[:quantity])}
+	def get_payment
+		begin
+			accept_coins(STDIN.gets.chomp)
+			puts "You inserted #{inserted_change.coin_type}."
+		rescue InvalidCoinException
+			puts "The entered coin is not valid."
+		end
 	end
 
-	def change_load
-		Change::COINS.each {|coin| change << Change.new(coin[:coin_type], coin[:quantity])}
+	def confirm_purchase
+		puts "You just bought a #{selected_product.name}!"
 	end
 
-	def product_count(name)
-		products.select {|product| product.name == name}.first.quantity
+	def check_payment
+		if check_equal_amount
+			confirm_purchase
+			return true
+		else check_inequal_payment
+		end
 	end
 
-	def change_count(coin_type)
-		select_change(coin_type).quantity
-	end
-
-	def change_update(coin_type)
-		select_change(coin_type).quantity += 1
-	end
-
-	def select_product(code)
-		raise InvalidCodeException.new if !Product::ALLOWED_PRODUCTS.include?(code)
-		@selected_product = products.select {|product| product.code == code}.first
-	end
-
-	def select_change(coin_type)
-		raise InvalidCoinException.new if !Change::ALLOWED_COINS.include?(coin_type)
-		change.select {|coin| coin.coin_type == coin_type}.first
-	end
-
-	def accept_coins(coin_type)
-		@inserted_change = select_change(coin_type)
-		change_update(coin_type)
-		update_user_credit
-	end
-
-	def update_user_credit
-		self.user_change = self.user_change + self.inserted_change.value
-	end
-
-	def sell_product(product)
-		select_product(product.code).quantity -= 1
+	def check_inequal_payment
+		if check_superior_amount
+			return_change
+			return true
+		else ask_for_more_change
+		end
 	end
 
 	def check_equal_amount
@@ -93,9 +88,5 @@ module VendingMachine
 
 	def compute_price
 		convert(selected_product.price)
-	end
-
-	def convert(coin_value)
-		coin_value < 100 ? "#{coin_value}p" : "£#{coin_value / 100.00}"
 	end
 end

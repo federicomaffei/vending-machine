@@ -14,7 +14,6 @@ Design a vending machine in code. The vending machine, once a product is selecte
 
 * The Application contains all the actions related to the interface with the User. It ensures a correct user experience, handling wrong input with exceptions and performing the business logic.
 
-
 ###Technologies used:
 
 * Ruby, Rspec

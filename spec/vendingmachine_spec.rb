@@ -1,111 +1,99 @@
 require 'vendingmachine'
-require 'error'
-
-class MachineHolder; include VendingMachine; end
 
 describe VendingMachine do
-	let(:machine) {MachineHolder.new}
-	let(:mars_bar) {Product.new('Mars Bar', 100, "1", 10)}
-	context 'when initialized' do
-		it 'has a capacity of 50 slots for products by default.' do
-			expect(machine.capacity).to eq 50
+	let(:machine) {VendingMachine.new}
+	context 'simple user interaction' do
+		it 'welcomes the user' do
+			expect(STDOUT).to receive(:puts).with "Welcome to Federico's Vending Machine!"
+			machine.welcome_message
 		end
-		it 'when created it is empty (has no products stored).' do
-			expect(machine).to be_empty	
+
+		it 'prompts the user to choose a product' do
+			expect(STDOUT).to receive(:puts).with "Please, enter 1 for Mars Bar, 2 for Snickers, 3 for Coca Cola, 4 for Pringles, 5 for Water:"
+			machine.prompt_product
+		end
+
+		it 'prompts the user to input change' do
+			expect(STDOUT).to receive(:puts).with "Please enter a coin, accepted formats: £2, £1, 50p, 20p, 10p, 5p, 2p, 1p."
+			machine.prompt_change
 		end
 	end
 
-	context 'initial loading' do
-		before(:each) {machine.products_load}
-		it 'is initially loaded with 10 Mars Bars.' do
-			expect(machine.product_count('Mars Bar')).to eq 10
-		end
-		it 'is initially loaded with 10 Snickers.' do
-			expect(machine.product_count('Snickers')).to eq 10
-		end
-		it 'is initially loaded with 10 Coca Cola.' do
-			expect(machine.product_count('Coca Cola')).to eq 10
-		end
-		it 'is initially loaded with 10 Pringles cans.' do
-			expect(machine.product_count('Pringles')).to eq 10
-		end
-		it 'is initially loaded with 10 water bottles.' do
-			expect(machine.product_count('Water')).to eq 10
-		end
-	end
-
-	context 'initial change loading' do
-		before(:each) {machine.change_load}
-		it 'is initially loaded with 5 £2 coins.' do
-			expect(machine.change_count('£2')).to eq 5
-		end
-		it 'is initially loaded with 5 £1 coins.' do
-			expect(machine.change_count('£1')).to eq 5
-		end
-		it 'is initially loaded with 5 50p coins.' do
-			expect(machine.change_count('50p')).to eq 5
-		end
-		it 'is initially loaded with 5 20p coins.' do
-			expect(machine.change_count('20p')).to eq 5
-		end
-		it 'is initially loaded with 5 10p coins.' do
-			expect(machine.change_count('10p')).to eq 5
-		end
-		it 'is initially loaded with 5 5p coins.' do
-			expect(machine.change_count('5p')).to eq 5
-		end
-		it 'is initially loaded with 5 2p coins.' do
-			expect(machine.change_count('2p')).to eq 5
-		end
-		it 'is initially loaded with 5 1p coins.' do
-			expect(machine.change_count('1p')).to eq 5
-		end
-	end
-
-	context 'product selection and purchase' do
-		before(:each) do
+	context 'handling user choices' do
+		before(:each) do 
 			machine.products_load
 			machine.change_load
 		end
 
-		it 'selects a product by code, if available.' do
-			expect(machine.select_product("1").name).to eq 'Mars Bar'
+		it 'allows the user to select a product by code' do
+			expect(STDIN).to receive(:gets).and_return "1"
+			expect(STDOUT).to receive(:puts).with "You selected a Mars Bar. The price is £1.0."
+			machine.get_product_choice
 		end
 
-		it 'throws an error if the code entered by the user is invalid.' do
-			expect{machine.select_product("wrong")}.to raise_exception(InvalidCodeException)
+		it 'handles an invalid product choice' do
+			expect(STDIN).to receive(:gets).and_return "wrong"
+			expect(STDOUT).to receive(:puts).with "The entered code does not correspond to a product."
+			machine.get_product_choice
 		end
 
-		it 'processes and accepts money, if the format is known.' do
-			machine.accept_coins("£2")
-			expect(machine.change_count("£2")).to eq 6
+		it 'allows the user to put money in the machine.' do
+			expect(STDIN).to receive(:gets).and_return "£2"
+			expect(STDOUT).to receive(:puts).with "You inserted £2."
+			machine.get_payment
 		end
 
-		it 'throws an error if the coin type entered by the user is invalid.' do
-			expect{machine.accept_coins("wrong_type")}.to raise_exception(InvalidCoinException)
+		it 'handles an invalid coin input.' do
+			expect(STDIN).to receive(:gets).and_return "wrong"
+			expect(STDOUT).to receive(:puts).with "The entered coin is not valid."
+			machine.get_payment
+		end
+	end
+
+	context 'handling payment logic' do
+		before(:each) do
+			machine.products_load
+			machine.change_load
+			expect(STDIN).to receive(:gets).and_return "1"
+			expect(STDOUT).to receive(:puts).with "You selected a Mars Bar. The price is £1.0."
+			machine.get_product_choice
 		end
 
-		it 'deletes one product that has been sold from the total.' do
-			machine.sell_product(mars_bar)
-			expect(machine.product_count('Mars Bar')).to eq 9
+		it 'confirms if payment is exactly correct.' do
+			expect(STDIN).to receive(:gets).and_return "£1"
+			expect(STDOUT).to receive(:puts).with "You inserted £1."
+			expect(STDOUT).to receive(:puts).with "You just bought a Mars Bar!"
+			machine.get_payment
+			machine.check_payment
 		end
 
-		it 'checks if the change inserted by the user is exactly enough for the product.' do
-			machine.select_product("1")
-			machine.accept_coins("£1")
-			expect(machine.check_equal_amount).to be_truthy
+		it 'returns a message if payment is insufficient, with the amount still due.' do
+			expect(STDIN).to receive(:gets).and_return "50p"
+			expect(STDOUT).to receive(:puts).with "You inserted 50p."
+			expect(STDOUT).to receive(:puts).with "50p more needed!"
+			expect(STDOUT).to receive(:puts).with "Please enter a coin, accepted formats: £2, £1, 50p, 20p, 10p, 5p, 2p, 1p."
+			machine.get_payment
+			machine.check_payment
 		end
 
-		it 'checks if the change inserted by the user is less than enough for the product.' do
-			machine.select_product("1")
-			machine.accept_coins("50p")
-			expect(machine.check_inferior_amount).to be_truthy
+		it 'returns a message if payment is more than needed, with the change.' do
+			expect(STDIN).to receive(:gets).and_return "50p"
+			expect(STDOUT).to receive(:puts).with "You inserted 50p."
+			expect(STDOUT).to receive(:puts).with "50p more needed!"
+			expect(STDOUT).to receive(:puts).with "Please enter a coin, accepted formats: £2, £1, 50p, 20p, 10p, 5p, 2p, 1p."
+			expect(STDIN).to receive(:gets).and_return "£1"
+			expect(STDOUT).to receive(:puts).with "You inserted £1."
+			expect(STDOUT).to receive(:puts).with "You just bought a Mars Bar!"
+			expect(STDOUT).to receive(:puts).with "Your change is 50p."
+			machine.get_payment
+			machine.check_payment
+			machine.get_payment
+			machine.check_payment
+		end
+		
+		it 'gives a confirmation to the user, if the item is sold.' do
+			expect(STDOUT).to receive(:puts).with "You just bought a Mars Bar!"
+			machine.confirm_purchase
 		end
 	end
 end
-
-
-
-
-
-

@@ -1,15 +1,15 @@
-require_relative './lib/application'
+require_relative './lib/vendingmachine'
 
-app = Application.new
-app.products_load
-app.change_load
-app.welcome_message
-app.prompt_product
-app.get_product_choice
-app.prompt_change
+machine = VendingMachine.new
+machine.products_load
+machine.change_load
+machine.welcome_message
+machine.prompt_product
+machine.get_product_choice
+machine.prompt_change
 loop do
-	app.get_payment
-	if app.check_payment == true
+	machine.get_payment
+	if machine.check_payment == true
 		exit
 	end
 end
