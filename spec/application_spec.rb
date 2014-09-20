@@ -66,6 +66,7 @@ describe Application do
 			expect(STDIN).to receive(:gets).and_return "50p"
 			expect(STDOUT).to receive(:puts).with "You inserted 50p."
 			expect(STDOUT).to receive(:puts).with "50p more needed!"
+			expect(STDOUT).to receive(:puts).with "Please enter a coin, accepted formats: £2, £1, 50p, 20p, 10p, 5p, 2p, 1p."
 			app.get_payment
 			app.check_payment
 		end
@@ -74,6 +75,7 @@ describe Application do
 			expect(STDIN).to receive(:gets).and_return "50p"
 			expect(STDOUT).to receive(:puts).with "You inserted 50p."
 			expect(STDOUT).to receive(:puts).with "50p more needed!"
+			expect(STDOUT).to receive(:puts).with "Please enter a coin, accepted formats: £2, £1, 50p, 20p, 10p, 5p, 2p, 1p."
 			expect(STDIN).to receive(:gets).and_return "£1"
 			expect(STDOUT).to receive(:puts).with "You inserted £1."
 			expect(STDOUT).to receive(:puts).with "You just bought a Mars Bar!"

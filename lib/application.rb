@@ -1,4 +1,5 @@
 require_relative 'vendingmachine'
+require_relative 'error'
 
 class Application
 
@@ -19,12 +20,13 @@ class Application
 	end
 
 	def ask_for_more_change
-		puts "#{compute_missing_change}p more needed!"
+		compute_missing_change < 100 ? puts("#{compute_missing_change}p more needed!") : puts("£#{compute_missing_change/100.00} more needed!")
+		prompt_change
 	end
 
 	def return_change
+		compute_due_change < 100 ? puts("Your change is #{compute_due_change}p.") : puts("Your change is £#{compute_due_change/100.00}.")
 		confirm_purchase
-		puts "Your change is #{compute_due_change}p."
 	end		
 
 	def get_product_choice
@@ -50,14 +52,14 @@ class Application
 	end
 
 	def check_payment
-		check_equal_amount ? confirm_purchase : check_inequal_payment
+		if check_equal_amount
+			confirm_purchase
+			return true
+		else check_inequal_payment
+		end
 	end
 
 	def check_inequal_payment
 		check_superior_amount ? return_change : ask_for_more_change
-	end
-
-	def application_logic
-		puts 'test'
 	end
 end
