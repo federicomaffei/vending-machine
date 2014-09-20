@@ -37,4 +37,4 @@ rspec
 
 ###Code Climate evaluation:
 
-[![Code Climate](https://codeclimate.com/github/federicomaffei/cinema-reservations/badges/gpa.svg)](https://codeclimate.com/github/federicomaffei/cinema-reservations)
+[![Code Climate](https://codeclimate.com/github/federicomaffei/vending-machine/badges/gpa.svg)](https://codeclimate.com/github/federicomaffei/vending-machine)
