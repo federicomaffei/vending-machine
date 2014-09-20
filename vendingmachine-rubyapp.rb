@@ -8,7 +8,7 @@ app.get_product_choice
 app.prompt_change
 loop do
 	app.get_payment
-	if app.check_payment
+	if app.check_payment == true
 		exit
 	end
 end

@@ -23,7 +23,7 @@ describe Application do
 		before(:each) {app.products_load}
 		it 'allows the user to select a product by code' do
 			expect(STDIN).to receive(:gets).and_return "1"
-			expect(STDOUT).to receive(:puts).with "You selected a Mars Bar. The price is 100."
+			expect(STDOUT).to receive(:puts).with "You selected a Mars Bar. The price is £1.0."
 			app.get_product_choice
 		end
 
@@ -50,7 +50,7 @@ describe Application do
 		before(:each) do
 			app.products_load
 			expect(STDIN).to receive(:gets).and_return "1"
-			expect(STDOUT).to receive(:puts).with "You selected a Mars Bar. The price is 100."
+			expect(STDOUT).to receive(:puts).with "You selected a Mars Bar. The price is £1.0."
 			app.get_product_choice
 		end
 

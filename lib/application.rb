@@ -20,19 +20,19 @@ class Application
 	end
 
 	def ask_for_more_change
-		compute_missing_change < 100 ? puts("#{compute_missing_change}p more needed!") : puts("£#{compute_missing_change/100.00} more needed!")
+		puts("#{compute_missing_change} more needed!")
 		prompt_change
 	end
 
 	def return_change
-		compute_due_change < 100 ? puts("Your change is #{compute_due_change}p.") : puts("Your change is £#{compute_due_change/100.00}.")
+		puts("Your change is #{compute_due_change}.")
 		confirm_purchase
 	end		
 
 	def get_product_choice
 		begin
 			select_product(STDIN.gets.chomp)
-			puts "You selected a #{selected_product.name}. The price is #{selected_product.price}."
+			puts "You selected a #{selected_product.name}. The price is #{compute_price}."
 		rescue InvalidCodeException
 			puts "The entered code does not correspond to a product."
 		end
@@ -60,6 +60,10 @@ class Application
 	end
 
 	def check_inequal_payment
-		check_superior_amount ? return_change : ask_for_more_change
+		if check_superior_amount
+			return_change
+			return true
+		else ask_for_more_change
+		end
 	end
 end

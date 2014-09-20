@@ -66,6 +66,10 @@ module VendingMachine
 	def accept_coins(coin_type)
 		raise InvalidCoinException.new if !ALLOWED_COINS.include?(coin_type)
 		change << Change.new(coin_type)
+		update_user_credit(coin_type)
+	end
+
+	def update_user_credit(coin_type)
 		@inserted_change = select_change(coin_type)
 		self.user_change = self.user_change + self.inserted_change.value
 	end
@@ -87,10 +91,18 @@ module VendingMachine
 	end
 
 	def compute_due_change
-		user_change - selected_product.price
+		convert(user_change - selected_product.price)
 	end
 
 	def compute_missing_change
-		selected_product.price - user_change
+		convert(selected_product.price - user_change)
+	end
+
+	def compute_price
+		convert(selected_product.price)
+	end
+
+	def convert(coin_value)
+		coin_value < 100 ? "#{coin_value}p" : "£#{coin_value / 100.00}"
 	end
 end
