@@ -4,18 +4,7 @@ require_relative 'change'
 module VendingMachine
 
 	CAPACITY = 50
-	PRODUCTS = [{name: 'Mars Bar', price: 100, code: "1", quantity: 10}, 
-		{name: 'Snickers', price: 90, code: "2", quantity: 10},
-		{name: 'Coca Cola', price: 80, code: "3", quantity: 10},
-		{name: 'Pringles', price: 120, code: "4", quantity: 10},
-		{name: 'Water', price: 60, code: "5", quantity: 10}]
-	COINS = [{coin_type: "£2", quantity: 5}, {coin_type: "£1", quantity: 5},
-		{coin_type: "50p", quantity: 5}, {coin_type: "20p", quantity: 5},
-		{coin_type: "10p", quantity: 5}, {coin_type: "5p", quantity: 5},
-		{coin_type: "2p", quantity: 5}, {coin_type: "1p", quantity: 5}]
-	ALLOWED_PRODUCTS = ["1", "2", "3", "4", "5"]
-	ALLOWED_COINS = ["£2", "£1", "50p", "20p", "10p", "5p", "2p", "1p"]
-
+	
 	attr_accessor :capacity, :user_change, :selected_product, :inserted_change
 
 	def capacity
@@ -39,11 +28,11 @@ module VendingMachine
 	end
 
 	def products_load
-		PRODUCTS.each {|product| products << Product.new(product[:name], product[:price], product[:code], product[:quantity])}
+		Product::PRODUCTS.each {|product| products << Product.new(product[:name], product[:price], product[:code], product[:quantity])}
 	end
 
 	def change_load
-		COINS.each {|coin| change << Change.new(coin[:coin_type], coin[:quantity])}
+		Change::COINS.each {|coin| change << Change.new(coin[:coin_type], coin[:quantity])}
 	end
 
 	def product_count(name)
@@ -54,19 +43,23 @@ module VendingMachine
 		select_change(coin_type).quantity
 	end
 
+	def change_update(coin_type)
+		select_change(coin_type).quantity += 1
+	end
+
 	def select_product(code)
-		raise InvalidCodeException.new if !ALLOWED_PRODUCTS.include?(code)
+		raise InvalidCodeException.new if !Product::ALLOWED_PRODUCTS.include?(code)
 		@selected_product = products.select {|product| product.code == code}.first
 	end
 
 	def select_change(coin_type)
-		raise InvalidCoinException.new if !ALLOWED_COINS.include?(coin_type)
+		raise InvalidCoinException.new if !Change::ALLOWED_COINS.include?(coin_type)
 		change.select {|coin| coin.coin_type == coin_type}.first
 	end
 
 	def accept_coins(coin_type)
 		@inserted_change = select_change(coin_type)
-		select_change(coin_type).quantity += 1
+		change_update(coin_type)
 		update_user_credit
 	end
 
