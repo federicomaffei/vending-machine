@@ -3,10 +3,7 @@ require 'user'
 describe User do
 	let(:user) {User.new}
 	context 'initially' do
-		it 'has no products when he gets to the vending machine.' do
-			expect(user.products).to be_empty
-		end
-
+	
 		it 'has 1 £2 coin.' do
 			expect(user.change_count('£2')).to eq 1
 		end
