@@ -15,6 +15,14 @@ class VendingMachine
 		products_load
 	end
 
+	def inserted_change
+		@inserted_change
+	end
+
+	def selected_product
+		@selected_product
+	end
+
 	def welcome_message
 		puts "Welcome to Federico's Vending Machine!"
 	end
@@ -39,7 +47,7 @@ class VendingMachine
 
 	def get_product_choice
 		begin
-			select_product(STDIN.gets.chomp)
+			@selected_product = select_product(STDIN.gets.chomp)
 			puts "You selected a #{selected_product.name}. The price is #{compute_price}."
 		rescue InvalidCodeException
 			puts "The entered code does not correspond to a product."
@@ -100,6 +108,7 @@ class VendingMachine
 	end
 
 	def accept_coins(coin_type)
+		@inserted_change = select_change(coin_type)
 		self.give_change(coin_type)
 		user.take_change(coin_type)
 		update_user_credit

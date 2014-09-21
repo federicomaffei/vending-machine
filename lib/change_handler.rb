@@ -2,8 +2,6 @@ require_relative 'product'
 require_relative 'change'
 
 module ChangeHandler
-	
-	attr_accessor :inserted_change
 
 	def change
 		@change ||= []
@@ -11,7 +9,7 @@ module ChangeHandler
 
 	def select_change(coin_type)
 		raise InvalidCoinException.new if !Change::ALLOWED_COINS.include?(coin_type)
-		@inserted_change = change.select {|coin| coin.coin_type == coin_type}.first
+		change.select {|coin| coin.coin_type == coin_type}.first
 	end
 
 	def change_load

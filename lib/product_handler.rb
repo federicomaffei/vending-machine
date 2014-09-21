@@ -5,7 +5,7 @@ module ProductHandler
 
 	CAPACITY = 50
 	
-	attr_accessor :capacity, :selected_product
+	attr_accessor :capacity
 
 	def capacity
 		@capacity = CAPACITY
@@ -29,7 +29,7 @@ module ProductHandler
 
 	def select_product(code)
 		raise InvalidCodeException.new if !Product::ALLOWED_PRODUCTS.include?(code)
-		@selected_product = products.select {|product| product.code == code}.first
+		products.select {|product| product.code == code}.first
 	end
 
 	def sell_product(product)
