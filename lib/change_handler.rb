@@ -9,6 +9,9 @@ module ChangeHandler
 
 	def select_change(coin_type)
 		raise InvalidCoinException.new if !Change::ALLOWED_COINS.include?(coin_type)
+
+
+		
 		change.select {|coin| coin.coin_type == coin_type}.first
 	end
 

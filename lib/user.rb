@@ -17,5 +17,4 @@ class User
 	def credit
 		@credit ||= 0
 	end
-
 end
