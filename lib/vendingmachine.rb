@@ -60,6 +60,8 @@ class VendingMachine
 			puts "You inserted #{inserted_change.coin_type}."
 		rescue InvalidCoinException
 			puts "The entered coin is not valid."
+		rescue NoMoreCoinsException
+			puts "You do not have more coins of this kind."
 		end
 	end
 
