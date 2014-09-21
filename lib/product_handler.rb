@@ -29,6 +29,10 @@ module ProductHandler
 
 	def select_product(code)
 		raise InvalidCodeException.new if !Product::ALLOWED_PRODUCTS.include?(code)
+		product_selection(code)
+	end
+
+	def product_selection(code)
 		products.select {|product| product.code == code}.first
 	end
 
