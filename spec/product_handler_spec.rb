@@ -10,6 +10,7 @@ describe ProductHandler do
 		it 'has a capacity of 50 slots for products by default.' do
 			expect(product_handler.capacity).to eq 50
 		end
+
 		it 'when created it is empty (has no products stored).' do
 			expect(product_handler).to be_empty	
 		end
@@ -20,15 +21,19 @@ describe ProductHandler do
 		it 'is initially loaded with 10 Mars Bars.' do
 			expect(product_handler.product_count('Mars Bar')).to eq 10
 		end
+
 		it 'is initially loaded with 10 Snickers.' do
 			expect(product_handler.product_count('Snickers')).to eq 10
 		end
+
 		it 'is initially loaded with 10 Coca Cola.' do
 			expect(product_handler.product_count('Coca Cola')).to eq 10
 		end
+
 		it 'is initially loaded with 10 Pringles cans.' do
 			expect(product_handler.product_count('Pringles')).to eq 10
 		end
+		
 		it 'is initially loaded with 10 water bottles.' do
 			expect(product_handler.product_count('Water')).to eq 10
 		end

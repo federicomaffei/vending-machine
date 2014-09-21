@@ -3,14 +3,10 @@ require_relative 'change'
 
 module ChangeHandler
 	
-	attr_accessor :user_change, :inserted_change
+	attr_accessor :inserted_change
 
 	def change
 		@change ||= []
-	end
-
-	def user_change
-		@user_change ||= 0
 	end
 
 	def select_change(coin_type)
@@ -31,6 +27,7 @@ module ChangeHandler
 	end
 
 	def take_change(coin_type)
+		raise NoMoreCoinsException.new if change_count(coin_type) == 0
 		select_change(coin_type).quantity -= 1
 	end
 

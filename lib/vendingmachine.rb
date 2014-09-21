@@ -11,8 +11,8 @@ class VendingMachine
 
 	def initialize
 		@user = User.new
-		self.change_load
-		self.products_load
+		change_load
+		products_load
 	end
 
 	def welcome_message
@@ -76,23 +76,23 @@ class VendingMachine
 	end
 
 	def check_equal_amount
-		user_change == selected_product.price ? true : false
+		user.credit == selected_product.price ? true : false
 	end
 
 	def check_superior_amount
-		user_change > selected_product.price ? true : false
+		user.credit > selected_product.price ? true : false
 	end
 
 	def check_inferior_amount
-		user_change < selected_product.price ? true : false
+		user.credit < selected_product.price ? true : false
 	end
 
 	def compute_due_change
-		convert(user_change - selected_product.price)
+		convert(user.credit - selected_product.price)
 	end
 
 	def compute_missing_change
-		convert(selected_product.price - user_change)
+		convert(selected_product.price - user.credit)
 	end
 
 	def compute_price
@@ -106,6 +106,6 @@ class VendingMachine
 	end
 
 	def update_user_credit
-		self.user_change = self.user_change + self.inserted_change.value
+		user.credit = user.credit + inserted_change.value
 	end
 end

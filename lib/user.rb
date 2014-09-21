@@ -5,8 +5,10 @@ class User
 
 	include ChangeHandler, ProductHandler
 
+	attr_accessor :credit
+
 	def initialize
-		self.change_load
+		change_load
 	end
 
 	def products
@@ -15,6 +17,10 @@ class User
 
 	def change
 		@change ||= []
+	end
+
+	def credit
+		@credit ||= 0
 	end
 
 end

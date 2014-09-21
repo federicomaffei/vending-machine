@@ -61,8 +61,11 @@ describe VendingMachine do
 			machine.check_payment
 		end
 
-		it 'takes money from the user.' do
-			
+		it 'takes money as payment from the user.' do
+			machine.accept_coins("£1")
+			expect(machine.user.change_count("£1")).to eq 0
+			expect(machine.change_count("£1")).to eq 2
+		end
 
 		it 'returns a message if payment is insufficient, with the amount still due.' do
 			expect(STDIN).to receive(:gets).and_return "50p"

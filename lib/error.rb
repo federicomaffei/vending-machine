@@ -9,3 +9,9 @@ class InvalidCoinException < Exception
 		super
 	end
 end
+
+class NoMoreCoinsException < Exception
+	def initialize(msg = "There are no more coins of this kind.")
+		super
+	end
+end
