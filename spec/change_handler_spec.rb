@@ -35,17 +35,20 @@ describe ChangeHandler do
 	end
 
 	context 'accepting change' do
-		before(:each) do
-			change_handler.change_load
-		end
+		before(:each) {change_handler.change_load}
 
-		it 'processes and accepts money, if the format is known.' do
-			change_handler.accept_coins("£2")
+		it 'accepts change, if the format is known.' do
+			change_handler.give_change("£2")
 			expect(change_handler.change_count("£2")).to eq 2
 		end
 
 		it 'throws an error if the coin type entered by the user is invalid.' do
-			expect{change_handler.accept_coins("wrong_type")}.to raise_exception(InvalidCoinException)
+			expect{change_handler.give_change("wrong_type")}.to raise_exception(InvalidCoinException)
+		end
+
+		it 'takes change and decreases change count.' do
+			change_handler.take_change("£2")
+			expect(change_handler.change_count("£2")).to eq 0
 		end
 	end
 end

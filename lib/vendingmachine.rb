@@ -1,10 +1,19 @@
 require_relative 'change_handler'
 require_relative 'product_handler'
+require_relative 'user'
 require_relative 'error'
 
 class VendingMachine
 
 	include ChangeHandler, ProductHandler
+
+	attr_accessor :user
+
+	def initialize
+		@user = User.new
+		self.change_load
+		self.products_load
+	end
 
 	def welcome_message
 		puts "Welcome to Federico's Vending Machine!"
@@ -88,5 +97,15 @@ class VendingMachine
 
 	def compute_price
 		convert(selected_product.price)
+	end
+
+	def accept_coins(coin_type)
+		self.give_change(coin_type)
+		user.take_change(coin_type)
+		update_user_credit
+	end
+
+	def update_user_credit
+		self.user_change = self.user_change + self.inserted_change.value
 	end
 end

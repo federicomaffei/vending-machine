@@ -2,8 +2,7 @@ require 'user'
 
 describe User do
 	let(:user) {User.new}
-	context 'initialization' do
-		before(:each) {user.change_load}
+	context 'initially' do
 		it 'has no products when he gets to the vending machine.' do
 			expect(user.products).to be_empty
 		end

@@ -13,6 +13,11 @@ module ChangeHandler
 		@user_change ||= 0
 	end
 
+	def select_change(coin_type)
+		raise InvalidCoinException.new if !Change::ALLOWED_COINS.include?(coin_type)
+		@inserted_change = change.select {|coin| coin.coin_type == coin_type}.first
+	end
+
 	def change_load
 		Change::COINS.each {|coin| change << Change.new(coin[:coin_type], coin[:quantity])}
 	end
@@ -21,23 +26,12 @@ module ChangeHandler
 		select_change(coin_type).quantity
 	end
 
-	def change_update(coin_type)
+	def give_change(coin_type)
 		select_change(coin_type).quantity += 1
 	end
 
-	def select_change(coin_type)
-		raise InvalidCoinException.new if !Change::ALLOWED_COINS.include?(coin_type)
-		change.select {|coin| coin.coin_type == coin_type}.first
-	end
-
-	def accept_coins(coin_type)
-		@inserted_change = select_change(coin_type)
-		change_update(coin_type)
-		update_user_credit
-	end
-
-	def update_user_credit
-		self.user_change = self.user_change + self.inserted_change.value
+	def take_change(coin_type)
+		select_change(coin_type).quantity -= 1
 	end
 
 	def convert(coin_value)

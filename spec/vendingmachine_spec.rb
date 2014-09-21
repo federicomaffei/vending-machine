@@ -20,11 +20,6 @@ describe VendingMachine do
 	end
 
 	context 'handling user choices' do
-		before(:each) do 
-			machine.products_load
-			machine.change_load
-		end
-
 		it 'allows the user to select a product by code' do
 			expect(STDIN).to receive(:gets).and_return "1"
 			expect(STDOUT).to receive(:puts).with "You selected a Mars Bar. The price is £1.0."
@@ -52,8 +47,6 @@ describe VendingMachine do
 
 	context 'handling payment logic' do
 		before(:each) do
-			machine.products_load
-			machine.change_load
 			expect(STDIN).to receive(:gets).and_return "1"
 			expect(STDOUT).to receive(:puts).with "You selected a Mars Bar. The price is £1.0."
 			machine.get_product_choice
@@ -64,8 +57,12 @@ describe VendingMachine do
 			expect(STDOUT).to receive(:puts).with "You inserted £1."
 			expect(STDOUT).to receive(:puts).with "You just bought a Mars Bar!"
 			machine.get_payment
+			expect(machine.check_equal_amount).to be_truthy
 			machine.check_payment
 		end
+
+		it 'takes money from the user.' do
+			
 
 		it 'returns a message if payment is insufficient, with the amount still due.' do
 			expect(STDIN).to receive(:gets).and_return "50p"
@@ -73,6 +70,7 @@ describe VendingMachine do
 			expect(STDOUT).to receive(:puts).with "50p more needed!"
 			expect(STDOUT).to receive(:puts).with "Please enter a coin, accepted formats: £2, £1, 50p, 20p, 10p, 5p, 2p, 1p."
 			machine.get_payment
+			expect(machine.check_inferior_amount).to be_truthy
 			machine.check_payment
 		end
 
@@ -88,6 +86,7 @@ describe VendingMachine do
 			machine.get_payment
 			machine.check_payment
 			machine.get_payment
+			expect(machine.check_superior_amount).to be_truthy
 			machine.check_payment
 		end
 		

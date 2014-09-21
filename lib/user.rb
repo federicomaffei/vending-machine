@@ -5,6 +5,10 @@ class User
 
 	include ChangeHandler, ProductHandler
 
+	def initialize
+		self.change_load
+	end
+
 	def products
 		@products ||= []
 	end
