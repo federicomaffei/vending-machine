@@ -3,16 +3,11 @@ require_relative 'product_handler'
 
 class User
 
-	include ChangeHandler, ProductHandler
-
+	include ChangeHandler
 	attr_accessor :credit
 
 	def initialize
 		change_load
-	end
-
-	def products
-		@products ||= []
 	end
 
 	def change
