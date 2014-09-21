@@ -36,4 +36,13 @@ module ChangeHandler
 	def convert(coin_value)
 		coin_value < 100 ? "#{coin_value}p" : "£#{coin_value / 100.00}"
 	end
+
+	def give_change(change_value)
+		Change::ALLOWED_COINS.each do |coin|
+			(change_value / change_selection(coin).value).times do
+				give_money(coin)
+				change_value -= change_selection(coin).value
+			end
+		end
+	end
 end

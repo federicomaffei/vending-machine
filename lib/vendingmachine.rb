@@ -36,11 +36,12 @@ class VendingMachine
 	end
 
 	def ask_for_more_money
-		puts("#{compute_missing_change} more needed!")
+		puts("#{compute_missing_money} more needed!")
 		prompt_money
 	end
 
 	def return_change
+		user.give_change(user.credit - selected_product.price)
 		puts("Your change is #{compute_due_change}.")
 		confirm_purchase
 	end		
@@ -101,7 +102,7 @@ class VendingMachine
 		convert(user.credit - selected_product.price)
 	end
 
-	def compute_missing_change
+	def compute_missing_money
 		convert(selected_product.price - user.credit)
 	end
 

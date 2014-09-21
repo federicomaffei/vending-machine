@@ -41,7 +41,7 @@ describe ChangeHandler do
 		end
 	end
 
-	context 'giving change' do
+	context 'giving money' do
 		before(:each) {change_handler.change_load}
 		it 'increases the count of that coin type, if the format is known.' do
 			change_handler.give_money("£2")
@@ -53,7 +53,7 @@ describe ChangeHandler do
 		end
 	end
 
-	context 'taking change' do
+	context 'taking money' do
 		before(:each) {change_handler.change_load}
 		it 'decreases the count of that coin type, if the format is known.' do
 			change_handler.take_money("£2")
@@ -63,6 +63,15 @@ describe ChangeHandler do
 		it 'throws an error if trying to give an unavailable type of coin.' do
 			change_handler.take_money("£2")
 			expect{change_handler.take_money("£2")}.to raise_exception(NoMoreCoinsException)
+		end
+	end
+
+	context 'giving change back' do
+		before(:each) {change_handler.change_load}
+		it 'increases the count of coin type according to the due change after purchase.' do
+			change_handler.give_change(60)
+			expect(change_handler.money_count("50p")).to eq 3
+			expect(change_handler.money_count("10p")).to eq 6
 		end
 	end
 end
