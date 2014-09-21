@@ -27,7 +27,7 @@ module ProductHandler
 		products.select {|product| product.name == name}.first.quantity
 	end
 
-	def select_product(code)
+	def valid_product(code)
 		raise InvalidCodeException.new if !Product::ALLOWED_PRODUCTS.include?(code)
 		product_selection(code)
 	end
@@ -37,6 +37,6 @@ module ProductHandler
 	end
 
 	def sell_product(product)
-		select_product(product.code).quantity -= 1
+		valid_product(product.code).quantity -= 1
 	end
 end

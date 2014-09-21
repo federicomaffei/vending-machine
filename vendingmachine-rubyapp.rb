@@ -6,7 +6,7 @@ machine.change_load
 machine.welcome_message
 machine.prompt_product
 machine.get_product_choice
-machine.prompt_change
+machine.prompt_money
 loop do
 	machine.get_payment
 	if machine.check_payment == true

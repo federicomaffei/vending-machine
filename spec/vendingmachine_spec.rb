@@ -15,7 +15,7 @@ describe VendingMachine do
 
 		it 'prompts the user to input change' do
 			expect(STDOUT).to receive(:puts).with "Please enter a coin, accepted formats: £2, £1, 50p, 20p, 10p, 5p, 2p, 1p."
-			machine.prompt_change
+			machine.prompt_money
 		end
 	end
 
@@ -63,8 +63,8 @@ describe VendingMachine do
 
 		it 'takes money as payment from the user.' do
 			machine.accept_coins("£1")
-			expect(machine.user.change_count("£1")).to eq 0
-			expect(machine.change_count("£1")).to eq 2
+			expect(machine.user.money_count("£1")).to eq 0
+			expect(machine.money_count("£1")).to eq 2
 		end
 
 		it 'returns a message if payment is insufficient, with the amount still due.' do

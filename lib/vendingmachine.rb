@@ -15,8 +15,8 @@ class VendingMachine
 		products_load
 	end
 
-	def inserted_change
-		@inserted_change
+	def inserted_money
+		@inserted_money
 	end
 
 	def selected_product
@@ -31,13 +31,13 @@ class VendingMachine
 		puts "Please, enter 1 for Mars Bar, 2 for Snickers, 3 for Coca Cola, 4 for Pringles, 5 for Water:"
 	end
 
-	def prompt_change
+	def prompt_money
 		puts "Please enter a coin, accepted formats: £2, £1, 50p, 20p, 10p, 5p, 2p, 1p."
 	end
 
-	def ask_for_more_change
+	def ask_for_more_money
 		puts("#{compute_missing_change} more needed!")
-		prompt_change
+		prompt_money
 	end
 
 	def return_change
@@ -47,7 +47,7 @@ class VendingMachine
 
 	def get_product_choice
 		begin
-			@selected_product = select_product(STDIN.gets.chomp)
+			@selected_product = valid_product(STDIN.gets.chomp)
 			puts "You selected a #{selected_product.name}. The price is #{compute_price}."
 		rescue InvalidCodeException
 			puts "The entered code does not correspond to a product."
@@ -57,7 +57,7 @@ class VendingMachine
 	def get_payment
 		begin
 			accept_coins(STDIN.gets.chomp)
-			puts "You inserted #{inserted_change.coin_type}."
+			puts "You inserted #{inserted_money.coin_type}."
 		rescue InvalidCoinException
 			puts "The entered coin is not valid."
 		rescue NoMoreCoinsException
@@ -81,7 +81,7 @@ class VendingMachine
 		if check_superior_amount
 			return_change
 			return true
-		else ask_for_more_change
+		else ask_for_more_money
 		end
 	end
 
@@ -110,13 +110,13 @@ class VendingMachine
 	end
 
 	def accept_coins(coin_type)
-		@inserted_change = select_change(coin_type)
-		self.give_change(coin_type)
-		user.take_change(coin_type)
+		@inserted_money = valid_change(coin_type)
+		self.give_money(coin_type)
+		user.take_money(coin_type)
 		update_user_credit
 	end
 
 	def update_user_credit
-		user.credit = user.credit + inserted_change.value
+		user.credit = user.credit + inserted_money.value
 	end
 end

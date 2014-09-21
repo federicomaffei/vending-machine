@@ -7,7 +7,7 @@ module ChangeHandler
 		@change ||= []
 	end
 
-	def select_change(coin_type)
+	def valid_change(coin_type)
 		raise InvalidCoinException.new if !Change::ALLOWED_COINS.include?(coin_type)
 		change_selection(coin_type)
 	end
@@ -20,17 +20,17 @@ module ChangeHandler
 		Change::COINS.each {|coin| change << Change.new(coin[:coin_type], coin[:quantity])}
 	end
 
-	def change_count(coin_type)
-		select_change(coin_type).quantity
+	def money_count(coin_type)
+		valid_change(coin_type).quantity
 	end
 
-	def give_change(coin_type)
-		select_change(coin_type).quantity += 1
+	def give_money(coin_type)
+		valid_change(coin_type).quantity += 1
 	end
 
-	def take_change(coin_type)
-		raise NoMoreCoinsException.new if change_count(coin_type) == 0
-		select_change(coin_type).quantity -= 1
+	def take_money(coin_type)
+		raise NoMoreCoinsException.new if money_count(coin_type) == 0
+		valid_change(coin_type).quantity -= 1
 	end
 
 	def convert(coin_value)

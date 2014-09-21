@@ -45,11 +45,11 @@ describe ProductHandler do
 		end
 
 		it 'selects a product by code, if available.' do
-			expect(product_handler.select_product("1").name).to eq 'Mars Bar'
+			expect(product_handler.valid_product("1").name).to eq 'Mars Bar'
 		end
 
 		it 'throws an error if the code entered by the user is invalid.' do
-			expect{product_handler.select_product("wrong")}.to raise_exception(InvalidCodeException)
+			expect{product_handler.valid_product("wrong")}.to raise_exception(InvalidCodeException)
 		end
 
 		it 'deletes one product that has been sold from the total.' do
