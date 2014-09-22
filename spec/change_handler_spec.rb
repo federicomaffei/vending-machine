@@ -68,7 +68,7 @@ describe ChangeHandler do
 
 	context 'giving change back' do
 		before(:each) {change_handler.change_load}
-		it 'increases the count of coin type according to the due change after purchase.' do
+		it 'increases user coins according to the due change after purchase.' do
 			change_handler.give_change(60)
 			expect(change_handler.money_count("50p")).to eq 3
 			expect(change_handler.money_count("10p")).to eq 6
