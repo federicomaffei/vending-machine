@@ -67,6 +67,7 @@ class VendingMachine
 	end
 
 	def confirm_purchase
+		sell_product(@selected_product)
 		puts "You just bought a #{selected_product.name}!"
 	end
 

@@ -15,3 +15,9 @@ class NoMoreCoinsException < Exception
 		super
 	end
 end
+
+class OutOfStockException < Exception
+	def initialize(msg = "The product is out of stock, sorry :(.")
+		super
+	end
+end

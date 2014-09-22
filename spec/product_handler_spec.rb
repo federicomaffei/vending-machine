@@ -56,6 +56,11 @@ describe ProductHandler do
 			product_handler.sell_product(mars_bar)
 			expect(product_handler.product_count('Mars Bar')).to eq 9
 		end
+
+		it 'throws an error if the product is out of stock.' do
+			10.times{product_handler.sell_product(mars_bar)}
+			expect{product_handler.sell_product(mars_bar)}.to raise_exception(OutOfStockException)
+		end
 	end
 end
 

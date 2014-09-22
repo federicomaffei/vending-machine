@@ -37,6 +37,7 @@ module ProductHandler
 	end
 
 	def sell_product(product)
+		raise OutOfStockException.new if product_count(product.name) == 0
 		valid_product(product.code).quantity -= 1
 	end
 end
