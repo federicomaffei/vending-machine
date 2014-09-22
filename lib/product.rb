@@ -2,7 +2,7 @@ class Product
 
 	attr_accessor :name, :price, :code, :quantity
 
-	PRODUCTS = [{name: 'Mars Bar', price: 100, code: "1", quantity: 10}, 
+	PRODUCTS_BATCH = [{name: 'Mars Bar', price: 100, code: "1", quantity: 10}, 
 		{name: 'Snickers', price: 90, code: "2", quantity: 10},
 		{name: 'Coca Cola', price: 80, code: "3", quantity: 10},
 		{name: 'Pringles', price: 120, code: "4", quantity: 10},

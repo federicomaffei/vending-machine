@@ -20,7 +20,7 @@ module ProductHandler
 	end
 
 	def products_load
-		Product::PRODUCTS.each {|product| products << Product.new(product[:name], product[:price], product[:code], product[:quantity])}
+		Product::PRODUCTS_BATCH.each {|product| products << Product.new(product[:name], product[:price], product[:code], product[:quantity])}
 	end
 
 	def product_count(name)

@@ -17,7 +17,7 @@ module ChangeHandler
 	end		
 
 	def change_load
-		Change::COINS.each {|coin| change << Change.new(coin[:coin_type], coin[:quantity])}
+		Change::COINS_BATCH.each {|coin| change << Change.new(coin[:coin_type], coin[:quantity])}
 	end
 
 	def money_count(coin_type)

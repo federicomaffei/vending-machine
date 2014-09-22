@@ -2,7 +2,7 @@ require 'vendingmachine'
 
 describe VendingMachine do
 	let(:machine) {VendingMachine.new}
-	context 'simple user interaction' do
+	context 'user interface' do
 		it 'welcomes the user' do
 			expect(STDOUT).to receive(:puts).with "Welcome to Federico's Vending Machine!"
 			machine.welcome_message
@@ -67,6 +67,11 @@ describe VendingMachine do
 			expect(machine.money_count("£1")).to eq 2
 		end
 
+		it 'gives a confirmation to the user, if the item is sold.' do
+			expect(STDOUT).to receive(:puts).with "You just bought a Mars Bar!"
+			machine.confirm_purchase
+		end
+
 		it 'returns a message if payment is insufficient, with the amount still due.' do
 			expect(STDIN).to receive(:gets).and_return "50p"
 			expect(STDOUT).to receive(:puts).with "You inserted 50p."
@@ -91,11 +96,6 @@ describe VendingMachine do
 			machine.get_payment
 			expect(machine.check_superior_amount).to be_truthy
 			machine.check_payment
-		end
-		
-		it 'gives a confirmation to the user, if the item is sold.' do
-			expect(STDOUT).to receive(:puts).with "You just bought a Mars Bar!"
-			machine.confirm_purchase
 		end
 	end
 end
