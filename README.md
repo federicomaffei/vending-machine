@@ -4,19 +4,19 @@ Design a vending machine in code. The vending machine, once a product is selecte
 
 ###OOD structure:
 
-* The Product object has the following attributes: a name, a price, a code that can be used to select it when using the vending machine, and a quantity, which represents the number of objects of that kind left in the machine.
+* The **Product** object has the following attributes: a name, a price, a code that can be used to select it when using the vending machine, and a quantity, which represents the number of objects of that kind left in the machine.
 
-* A Change object has a type attribute, which stands for the name of the currency (as per the Domain Model), a value attribute, which represents the numeric value of the coin (e.g. £1 has value 100), and a quantity value, that indicates the number of coins of that type present in the machine.
+* A **Change** object has a type attribute, which stands for the name of the currency (as per the Domain Model), a value attribute, which represents the numeric value of the coin (e.g. £1 has value 100), and a quantity value, that indicates the number of coins of that type present in the machine.
 
-*The User object has a credit attribute, which increases as soon as coins are inserted in the VendingMachine, until the price of the object is reached and it is sold.
+* The **User** object has a credit attribute, which increases as soon as coins are inserted in the VendingMachine, until the price of the object is reached and it is sold.
 
-* The ChangeHandler is constructed as a Module. This is done to increase the extensibility of the application to other similar cases, since it provides all the methods related to the computation of the change. It contains the modules used to handle money, validate it and compute the change.
+* The **ChangeHandler** is constructed as a Module. This is done to increase the extensibility of the application to other similar cases, since it provides all the methods related to the computation of the change. It contains the modules used to handle money, validate it and compute the change.
 
-* The ProductHandler is constructed as a Module as well (for the same reason of the ChangeHandler), containing all the behaviors that control a Product, including validations, loading in VendingMachine and updating quantity at each sale.
+* The **ProductHandler** is constructed as a Module as well (for the same reason of the ChangeHandler), containing all the behaviors that control a Product, including validations, loading in VendingMachine and updating quantity at each sale.
 
-* The Error class uses inheritance to formulate custom error behaviors, such as the input of a wrong product code, wrong change type or unavailability of a certain coin type.
+* The **Error** class uses inheritance to formulate custom error behaviors, such as the input of a wrong product code, wrong change type or unavailability of a certain coin type.
 
-* The VendingMachine contains all the actions related to the interface with the User. It ensures a correct user experience, handling wrong input with exceptions and performing the business logic.
+* The **VendingMachine** contains all the actions related to the interface with the User. It ensures a correct user experience, handling wrong input with exceptions and performing the business logic.
 
 ###Application interface screenshot:
 
